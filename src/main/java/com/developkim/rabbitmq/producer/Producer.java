@@ -1,6 +1,6 @@
-package com.developkim.rabbitmq.config;
+package com.developkim.rabbitmq.producer;
 
-import static com.developkim.rabbitmq.config.RabbitMQConfig.QUEUE_NAME;
+import static com.developkim.rabbitmq.config.RabbitMQV1Config.QUEUE_NAME;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class Sender {
+public class Producer {
 
     private final RabbitTemplate rabbitTemplate;
 

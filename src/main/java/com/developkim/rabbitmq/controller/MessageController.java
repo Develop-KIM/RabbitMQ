@@ -1,6 +1,6 @@
 package com.developkim.rabbitmq.controller;
 
-import com.developkim.rabbitmq.config.Sender;
+import com.developkim.rabbitmq.producer.Producer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MessageController {
 
-    private final Sender sender;
+    private final Producer sender;
 
     @PostMapping("/send")
     public String sendMessage(@RequestBody String message) {

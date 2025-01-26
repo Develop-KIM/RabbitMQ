@@ -1,5 +1,6 @@
 package com.developkim.rabbitmq.config;
 
+import com.developkim.rabbitmq.consumer.WorkQueueConsumer;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -8,15 +9,14 @@ import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-// RabbitMQ 설정
 @Configuration
-public class RabbitMQConfig {
+public class RabbitMQV2Config {
 
-    public static final String QUEUE_NAME = "queue";
+    public static final String QUEUE_NAME = "WorkQueue";
 
     @Bean
     public Queue queue() {
-        return new Queue(QUEUE_NAME, false);
+        return new Queue(QUEUE_NAME);
     }
 
     @Bean
@@ -25,7 +25,7 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
+    public SimpleMessageListenerContainer simpleMessageListenerContainer(ConnectionFactory connectionFactory,
         MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
@@ -35,7 +35,7 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public MessageListenerAdapter listenerAdapter(Receiver receiver) {
-        return new MessageListenerAdapter(receiver, "receiveMessage");
+    public MessageListenerAdapter listenerAdapter(WorkQueueConsumer workQueueTask) {
+        return new MessageListenerAdapter(workQueueTask, "workQueueTask");
     }
 }
