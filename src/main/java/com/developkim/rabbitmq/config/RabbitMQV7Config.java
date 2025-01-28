@@ -8,31 +8,31 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//@Configuration
-public class RabbitMQV6Config {
+@Configuration
+public class RabbitMQV7Config {
 
-    public static final String ORDER_COMPLETED_QUEUE = "order_completed_queue";
-    public static final String ORDER_EXCHANGE = "order_exchange";
+    public static final String ORDER_COMPLETED_QUEUE = "orderCompletedQueue";
+    public static final String ORDER_TOPIC_EXCHANGE = "order_exchange";
+    public static final String ORDER_TOPIC_DLX = "deadLetterExchange";
+
     public static final String DLQ = "deadLetterQueue";
-    public static final String DLX = "deadLetterExchange";
+    public static final String DEAD_LETTER_ROUTING_KEY = "dead.letter";
 
     @Bean
     public TopicExchange orderExchange() {
-        return new TopicExchange(ORDER_EXCHANGE);
+        return new TopicExchange(ORDER_TOPIC_EXCHANGE);
     }
 
     @Bean
     public TopicExchange deadLetterExchange() {
-        return new TopicExchange(DLX);
+        return new TopicExchange(ORDER_TOPIC_DLX);
     }
 
-    // 메시지가 처리되지 못했을경우 자동으로 Deadletterqueue 이동시킴
     @Bean
     public Queue orderQueue() {
         return QueueBuilder.durable(ORDER_COMPLETED_QUEUE)
-            .withArgument("x-dead-letter-exchange", DLX)
-            .withArgument("x-dead-letter-routing-key", DLQ)
-            .ttl(5000)
+            .withArgument("x-dead-letter-exchange", ORDER_TOPIC_DLX)
+            .withArgument("x-dead-letter-routing-key", DEAD_LETTER_ROUTING_KEY)
             .build();
     }
 
@@ -43,11 +43,11 @@ public class RabbitMQV6Config {
 
     @Bean
     public Binding orderCompletedBinding() {
-        return BindingBuilder.bind(orderQueue()).to(orderExchange()).with("order.completed.#");
+        return BindingBuilder.bind(orderQueue()).to(orderExchange()).with("order.completed.*");
     }
 
     @Bean
     public Binding deadLetterBinding() {
-        return BindingBuilder.bind(deadLetterQueue()).to(deadLetterExchange()).with(DLQ);
+        return BindingBuilder.bind(deadLetterQueue()).to(deadLetterExchange()).with(DEAD_LETTER_ROUTING_KEY);
     }
 }

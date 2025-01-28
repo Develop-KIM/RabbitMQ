@@ -1,5 +1,7 @@
 package com.developkim.rabbitmq.producer;
 
+import static com.developkim.rabbitmq.config.RabbitMQV7Config.ORDER_TOPIC_EXCHANGE;
+
 import com.developkim.rabbitmq.config.RabbitMQV6Config;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +17,8 @@ public class OrderProducer {
 
     public void sendShipping(String message) {
         rabbitTemplate.convertAndSend(
-            RabbitMQV6Config.ORDER_EXCHANGE,
-            "order.completed.shipping",
+            ORDER_TOPIC_EXCHANGE,
+            "order.completed.*",
             message
         );
         log.info("[주문 완료] 배송 지시 메시지: {}", message);
