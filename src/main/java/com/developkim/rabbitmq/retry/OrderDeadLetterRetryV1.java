@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class OrderDeadLetterRetry {
+public class OrderDeadLetterRetryV1 {
 
     private final RabbitTemplate rabbitTemplate;
 

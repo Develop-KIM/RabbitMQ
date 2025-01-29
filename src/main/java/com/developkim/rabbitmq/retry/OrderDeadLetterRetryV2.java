@@ -1,9 +1,6 @@
-package com.developkim.rabbitmq.consumer;
+package com.developkim.rabbitmq.retry;
 
-import static com.developkim.rabbitmq.config.RabbitMQV7Config.DEAD_LETTER_ROUTING_KEY;
 import static com.developkim.rabbitmq.config.RabbitMQV7Config.DLQ;
-import static com.developkim.rabbitmq.config.RabbitMQV7Config.ORDER_COMPLETED_QUEUE;
-import static com.developkim.rabbitmq.config.RabbitMQV7Config.ORDER_TOPIC_DLX;
 import static com.developkim.rabbitmq.config.RabbitMQV7Config.ORDER_TOPIC_EXCHANGE;
 
 import lombok.RequiredArgsConstructor;
@@ -16,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class OrderDLQV3Consumer {
+public class OrderDeadLetterRetryV2 {
 
     private final RabbitTemplate rabbitTemplate;
     private final RetryTemplate retryTemplate;
